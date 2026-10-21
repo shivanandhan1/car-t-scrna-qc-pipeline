@@ -107,7 +107,7 @@ Stored in `data/raw/`. Raw files are never edited.
 
 - [x] Confirm library type: 10x Genomics Next GEM 5′ v2 (GSM8248030)
 - [x] Confirm Bag and Product are the same group: CAR T infusion product (GSM8248030)
-- [ ] Write the README and interview notes (step 5)
+- [x] Write the README and interview notes (step 5)
 - [x] Cluster, annotate, and compare CARNeg with CARPos (exploratory, step 6)
 
 ## Environment
