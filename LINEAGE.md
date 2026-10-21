@@ -7,10 +7,20 @@ Record of every dataset, file, and transformation in this project, in order.
 - **Accession:** GSE266486 (GEO)
 - **Title:** B cell directed CAR-T cell therapy results in activation of CD8+ cytotoxic CARneg bystander T cells in both non-human primates and patients (human)
 - **Source URL:** https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE266486
-- **Publication:** Kaminski J, Fleming RA, et al. *Blood* 2024;144(1):46-60. PMID 38558106
+- **Publication:** Kaminski J, Fleming RA, et al. *Blood* 2024;144(1):46-60. PMID 38558106. DOI 10.1182/blood.2023022717
 - **Platform:** GPL24676 (Illumina NovaSeq 6000)
 - **Submitted:** 2024-05-02. **Last GEO update:** 2024-08-13
-- **Raw data status:** Authors state raw data is being submitted to dbGaP. Not used in this project.
+- **Raw data status:** The authors state raw data is being submitted to dbGaP. As of 2026-10-21, a search of SRA for BioProject PRJNA1107270 returned no items. Raw reads were not used in this project.
+
+## Verified details
+
+| Item | Value | Source |
+|---|---|---|
+| Library chemistry | 10x Genomics Next GEM 5′ v2, scRNA-seq and scTCR-seq | GEO sample GSM8248030, Extraction protocol field |
+| Processing | Cell Ranger multi v7.0.0, reference GRCh38 (Ensembl v107) | GEO sample GSM8248030, Data processing field |
+| Bag group | CAR T infusion product. Source name "CAR T Product"; alt sample name Pt011_Bag | GEO sample GSM8248030 (titled Pt011_Product) |
+| CAR construct | Anti-CD19 CAR, pediatric patients with B-ALL | GEO sample GSM8248030, Extraction protocol field |
+| Cell barcodes | 16-base 10x format with -1 suffix, e.g. AAACCTGAGGAATTAC-1 | Observed in the .h5ad |
 
 ## Downloaded files
 
@@ -27,7 +37,7 @@ Stored in `data/raw/`. Raw files are never edited.
 - **Full object:** 82,416 cells x 20,669 genes
 - **Patients:** Pt006 through Pt011, with 21 sample IDs matching the 21 patient samples on the GEO page. No non-human primate samples appear in this file.
 - **Cells per patient:** Pt006 11,075; Pt007 29,437; Pt008 18,220; Pt009 8,795; Pt010 2,645; Pt011 12,244
-- **Cell_Source labels:** Bag (infusion product, to be confirmed), PBMC, CARPos, CARNeg, TCells
+- **Cell_Source labels:** Bag (CAR T infusion product), PBMC, CARPos, CARNeg, TCells
 - **Missing metadata:** None in the fields used for validation. `raw_clonotype_id` is empty for 38,080 cells (46%).
 
 ## Patient selection
@@ -60,7 +70,7 @@ Stored in `data/raw/`. Raw files are never edited.
 
 - **Script:** `scripts/pass_rates_pt011.py`
 - **Decision:** 15% mitochondrial cutoff, chosen to keep most CARPos cells while removing high-mitochondrial cells.
-- **Known trade-off:** The Bag group loses 43% of its cells at this cutoff. Its higher mitochondrial reads may reflect real biology from processing or stress. Flag this in any write-up.
+- **Known trade-off:** The Bag group (CAR T infusion product) loses 43% of its cells at this cutoff. Its higher mitochondrial reads may reflect real biology from processing or stress. Any analysis of the product itself is based on the cells that pass this filter. Flag this in any write-up.
 
 ### 4. Filtering
 - **Script:** `scripts/filter_pt011.py`
@@ -80,15 +90,15 @@ Stored in `data/raw/`. Raw files are never edited.
 - **Output:** `docs/metadata_validation_pt011.md`
 - **Result:** 15 of 15 checks passed
 - **Checks:** required fields complete; Cell_Source labels expected; single patient (Pt011); donor matches Patient; sample_id equals Patient_Cell_Source; Formatted_Sample_Name matches sample_id; cell barcodes unique and well-formed; gem_well a positive integer
-- **Alias applied:** `Pt011_Bag` in `sample_id` is labeled `Pt011_Product` in `Formatted_Sample_Name` for 4,228 cells. Treated as one group.
+- **Alias applied:** `Pt011_Bag` in `sample_id` is labeled `Pt011_Product` in `Formatted_Sample_Name` for 4,228 cells. Confirmed as the same group: GEO sample GSM8248030 is titled Pt011_Product and has alt sample name Pt011_Bag.
 - **Scope:** These are project-defined rules, not full CELLxGENE schema compliance.
 
 ## Open items
 
-- [ ] Confirm library type (10x) using the SRA Run Selector for GSE266486
-- [ ] Confirm from the paper's methods that "Bag" is the CAR-T infusion product, and that "Product" is the same group
-- [ ] Confirm from the paper's methods the meaning of each Cell_Source label
+- [x] Confirm library type: 10x Genomics Next GEM 5′ v2 (GSM8248030)
+- [x] Confirm Bag and Product are the same group: CAR T infusion product (GSM8248030)
 - [ ] Write the README and interview notes (step 5)
+- [ ] Future: cluster, annotate cell types, and compare CARNeg with CARPos
 
 ## Environment
 

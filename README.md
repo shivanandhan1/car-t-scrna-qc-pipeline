@@ -5,9 +5,10 @@ A quality-control and metadata-validation pipeline for public single-cell RNA-se
 ## Dataset
 
 - **Source:** GEO accession GSE266486, from Kaminski J et al., *Blood* 2024 (PMID 38558106)
-- **Patient analyzed:** Pt011 (12,244 cells: Bag, PBMC, CARNeg, CARPos)
+- **Patient analyzed:** Pt011 (12,244 cells: CAR T infusion product, PBMC, CARNeg, CARPos)
 - **Platform:** Illumina NovaSeq 6000 (GPL24676)
-- **Library type:** [10x Chromium, confirmed via SRA Run Selector]
+- **Library:** 10x Genomics Next GEM 5′ v2, with scRNA-seq and scTCR-seq (per GEO sample GSM8248030)
+- **Processing by authors:** Cell Ranger multi v7.0.0, GRCh38 reference
 
 The full dataset covers six patients. This project analyzes one, because it has the CAR-positive and CAR-negative groups needed for the paper's central comparison and fits on an 8 GB laptop.
 
@@ -24,18 +25,19 @@ Scripts are in `scripts/`. Every step writes a record to `docs/` or `LINEAGE.md`
 ## Results
 
 - 12,244 cells in, 8,834 kept (72.1%)
-- CARPos 88.7% kept, CARNeg 96.9%, PBMC 97.9%, Bag 56.7%
+- CARPos 88.7% kept, CARNeg 96.9%, PBMC 97.9%, infusion product (Bag) 56.7%
 - Metadata validation: 15 of 15 checks passed
 
 ## Trade-offs
 
-- **The mitochondrial filter removes 43% of the Bag group.** The Bag group has a median mitochondrial rate of 10.4%, nearly double the other groups. This may reflect biology, such as stress during processing, rather than poor data quality. The filter is applied uniformly, so it changes the group mix. Any comparison across groups should account for that.
+- **The mitochondrial filter removes 43% of the infusion product cells.** The Bag group has a median mitochondrial rate of 10.4%, about twice the other groups. This may reflect biology, such as stress during processing, rather than poor data quality. The filter is applied uniformly, so it changes the group mix. Any analysis of the infusion product itself is based on the cells that pass this filter.
 - **Validation rules are project-defined.** They are not full CELLxGENE schema compliance.
-- **One alias was applied.** The source labels the Bag group `Pt011_Bag` in `sample_id` and `Pt011_Product` in `Formatted_Sample_Name`. I treated them as one group. [Confirmed from paper methods / still to confirm]
+- **One label alias was applied.** The source labels the infusion product as `Pt011_Bag` in `sample_id` and `Pt011_Product` in `Formatted_Sample_Name`. Confirmed as the same group in GEO sample GSM8248030.
+- **Library chemistry is 5′ v2.** It captures TCR data alongside gene expression. The TCR data is missing for 46% of cells, so any TCR analysis covers only part of the dataset.
 
 ## Not in this project
 
-- No raw sequencing reads (the authors submitted them to dbGaP, and the raw tar was not used)
+- No raw sequencing reads. The authors state these are being submitted to dbGaP, and a search of SRA returned no items on 2026-10-21. The raw tar was not used.
 - No clustering, cell-type annotation, or differential expression. These are the natural next steps.
 - No warehouse or orchestration layer. The pipeline is in Python and scanpy, not dbt or Airflow.
 
