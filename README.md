@@ -38,7 +38,7 @@ Scripts are in `scripts/`. Every step writes a record to `docs/` or `LINEAGE.md`
 ## Not in this project
 
 - No raw sequencing reads. The authors state these are being submitted to dbGaP, and a search of SRA returned no items on 2026-10-21. The raw tar was not used.
-- No clustering, cell-type annotation, or differential expression. These are the natural next steps.
+- No differential expression or full biological interpretation. Clustering and an exploratory signature check are in the bystander section above.
 - No warehouse or orchestration layer. The pipeline is in Python and scanpy, not dbt or Airflow.
 
 ## Reproducing
@@ -53,3 +53,7 @@ python scripts/validate_metadata_pt011.py
 ```
 
 Raw data lives in `data/raw/` and is not committed. See `LINEAGE.md` for the download source and checksum.
+
+## Bystander signature check (exploratory)
+
+We scored CD8 T cells from clusters 3, 4, 8, 9, and 13 for a bystander signature approximated from the paper's abstract (KIR3DL2, CD160, KLRD1, CCL5, XCL1, CCR9 up; SELL, CD28 down). Within matched clusters, results were mixed: cluster 3 showed lower scores in CARNeg cells (p = 0.005), cluster 8 showed a small non-significant increase (p = 0.13), and two clusters lacked enough CARPos cells to test. A pooled comparison was significant, but CAR status is confounded with cell cluster, so the pooled result is not interpreted. With one patient, these results are descriptive and do not test the paper's claim. The gene set is approximate and was not the authors' full signature.

@@ -93,12 +93,22 @@ Stored in `data/raw/`. Raw files are never edited.
 - **Alias applied:** `Pt011_Bag` in `sample_id` is labeled `Pt011_Product` in `Formatted_Sample_Name` for 4,228 cells. Confirmed as the same group: GEO sample GSM8248030 is titled Pt011_Product and has alt sample name Pt011_Bag.
 - **Scope:** These are project-defined rules, not full CELLxGENE schema compliance.
 
+### 6. Clustering, annotation, and bystander check (exploratory)
+- Scripts: `scripts/cluster_pt011.py`, `scripts/check_t_cells.py`, `scripts/compare_cd8_signature.py`
+- Output: `data/processed/pt011_clustered.h5ad`, figures in `docs/figures/`
+- Clustering: 2,000 highly variable genes, 30 PCs, Leiden resolution 0.5, 15 clusters
+- Annotation: CD8 T (3, 4, 8, 9, 13); CD4 T (0, 1, 5); NK-like (12); monocytes (10, 14); unclear (2, 6, 7, 11; cluster 11 likely doublets). No B cells (MS4A1 and CD79A absent).
+- CARPos CD8 T cells are mostly in cluster 8; CARNeg mostly in clusters 3, 4, and 13. CAR status is confounded with cluster.
+- Within-cluster CARNeg minus CARPos signature score: cluster 3 -0.20 (p = 0.005); cluster 8 +0.10 (p = 0.13); clusters 4 and 13 untestable (18 and 2 CARPos cells).
+- Pooled comparison significant (p = 2.3e-5) but confounded by cluster. Not interpreted.
+- Limits: one patient, so the statistical unit is the patient and p-values are descriptive. Gene set approximated from the abstract, not the authors' full signature.
+
 ## Open items
 
 - [x] Confirm library type: 10x Genomics Next GEM 5′ v2 (GSM8248030)
 - [x] Confirm Bag and Product are the same group: CAR T infusion product (GSM8248030)
 - [ ] Write the README and interview notes (step 5)
-- [ ] Future: cluster, annotate cell types, and compare CARNeg with CARPos
+- [x] Cluster, annotate, and compare CARNeg with CARPos (exploratory, step 6)
 
 ## Environment
 
